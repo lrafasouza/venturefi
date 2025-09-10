@@ -32,7 +32,7 @@ export const routes: Routes = [
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', loadComponent: () => import('./pages/dashboard/dashboard.component').then(m => m.DashboardComponent) },
-      { path: 'dream-pursuit', loadComponent: () => import('./pages/dream-pursuit/dream-pursuit.component').then(m => m.DreamPursuitComponent) },
+      { path: 'dream-pursuit', loadComponent: () => import('./pages/dream-pursuit/dream-pursuit-super.component').then(m => m.DreamPursuitSuperComponent) },
       { path: 'transacoes', loadComponent: () => import('./pages/transacoes/transacoes.component').then(m => m.TransacoesComponent) },
       { path: 'relatorios', loadComponent: () => import('./pages/relatorios/relatorios.component').then(m => m.RelatoriosComponent) },
       { path: 'notificacoes', loadComponent: () => import('./pages/notificacoes/notificacoes.component').then(m => m.NotificacoesComponent) },

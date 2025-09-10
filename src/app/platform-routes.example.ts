@@ -15,7 +15,7 @@ export const platformRoutes: Routes = [
       {
         path: 'dream-pursuit',
         loadComponent: () => 
-          import('./pages/dream-pursuit/dream-pursuit.component').then(c => c.DreamPursuitComponent)
+          import('./pages/dream-pursuit/dream-pursuit-super.component').then(c => c.DreamPursuitSuperComponent)
       },
       {
         path: 'transacoes',
