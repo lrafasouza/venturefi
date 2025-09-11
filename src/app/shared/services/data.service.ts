@@ -27,6 +27,8 @@ export interface Goal {
   completed: boolean;
   monthlyTarget: number;
   actualMonthly: number;
+  lastKnownPercentage?: number;
+  isFavorite?: boolean;
 }
 
 @Injectable({

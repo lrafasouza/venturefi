@@ -7,993 +7,1058 @@ import { RouterModule } from '@angular/router';
   standalone: true,
   imports: [CommonModule, RouterModule],
   template: `
-    <div class="reports-container">
-      <main class="main-content">
-        <header class="dashboard-header">
-          <div class="header-content">
-            <div class="welcome-section">
-              <h1>Relatórios</h1>
-              <p>Análises detalhadas do seu desempenho financeiro</p>
+    <div class="executive-reports">
+      <!-- Executive Header -->
+      <header class="executive-header">
+        <div class="header-background">
+          <div class="gradient-mesh"></div>
+          <div class="floating-elements">
+            <div class="float-element chart"></div>
+            <div class="float-element data"></div>
+            <div class="float-element trend"></div>
+          </div>
+        </div>
+        <div class="header-content">
+          <div class="title-section">
+            <div class="breadcrumb">
+              <span class="breadcrumb-item">VentureFi</span>
+              <span class="breadcrumb-separator">›</span>
+              <span class="breadcrumb-current">Relatórios Executivos</span>
             </div>
-            <div class="header-actions">
-              <button class="btn btn-outline hover-scale focus-ring">Personalizar</button>
-              <button class="btn btn-primary hover-glow focus-ring">Exportar PDF</button>
+            <h1 class="executive-title">Dashboard Analítico</h1>
+            <p class="executive-subtitle">Insights avançados e métricas de performance para tomada de decisão estratégica</p>
+          </div>
+          <div class="header-actions">
+            <div class="time-range-selector">
+              <button class="range-btn active" (click)="setTimeRange('30d')">30D</button>
+              <button class="range-btn" (click)="setTimeRange('90d')">90D</button>
+              <button class="range-btn" (click)="setTimeRange('1y')">1Y</button>
+            </div>
+            <button class="export-btn premium">
+              <span class="btn-icon">📊</span>
+              <span>Export PDF</span>
+            </button>
+          </div>
+        </div>
+      </header>
+        
+      <!-- Executive Content -->
+      <main class="executive-content">
+        <!-- Executive Summary -->
+        <section class="executive-summary">
+          <div class="summary-grid">
+            <div class="summary-card primary">
+              <div class="card-header">
+                <div class="metric-icon revenue">💰</div>
+                <div class="metric-trend positive">
+                  <span class="trend-arrow">↗</span>
+                  <span class="trend-percent">+18.5%</span>
+                </div>
+              </div>
+              <div class="metric-value">R$ 127.430</div>
+              <div class="metric-label">Receita Total (90d)</div>
+              <div class="metric-insight">
+                <span class="insight-label">vs período anterior:</span>
+                <span class="insight-value positive">+R$ 19.840</span>
+              </div>
+            </div>
+
+            <div class="summary-card secondary">
+              <div class="card-header">
+                <div class="metric-icon profit">📈</div>
+                <div class="metric-trend positive">
+                  <span class="trend-arrow">↗</span>
+                  <span class="trend-percent">+24.2%</span>
+                </div>
+              </div>
+              <div class="metric-value">R$ 41.890</div>
+              <div class="metric-label">Margem de Lucro</div>
+              <div class="metric-insight">
+                <span class="insight-label">Taxa:</span>
+                <span class="insight-value">32.9%</span>
+              </div>
+            </div>
+
+            <div class="summary-card tertiary">
+              <div class="card-header">
+                <div class="metric-icon clients">👥</div>
+                <div class="metric-trend positive">
+                  <span class="trend-arrow">↗</span>
+                  <span class="trend-percent">+12.1%</span>
+                </div>
+              </div>
+              <div class="metric-value">47</div>
+              <div class="metric-label">Clientes Ativos</div>
+              <div class="metric-insight">
+                <span class="insight-label">Ticket Médio:</span>
+                <span class="insight-value">R$ 2.710</span>
+              </div>
+            </div>
+
+            <div class="summary-card quaternary">
+              <div class="card-header">
+                <div class="metric-icon cashflow">💎</div>
+                <div class="metric-trend stable">
+                  <span class="trend-arrow">→</span>
+                  <span class="trend-percent">+2.1%</span>
+                </div>
+              </div>
+              <div class="metric-value">R$ 23.560</div>
+              <div class="metric-label">Fluxo de Caixa</div>
+              <div class="metric-insight">
+                <span class="insight-label">Projeção 30d:</span>
+                <span class="insight-value">R$ 31.200</span>
+              </div>
             </div>
           </div>
-        </header>
-        
-        <div class="dashboard-content">
-          <!-- Period Selector -->
-          <section class="period-selector">
-            <div class="period-tabs">
-              <button 
-                class="period-btn" 
-                [class.active]="selectedPeriod === 'month'"
-                (click)="setPeriod('month')">
-                Este Mês
-              </button>
-              <button 
-                class="period-btn" 
-                [class.active]="selectedPeriod === 'quarter'"
-                (click)="setPeriod('quarter')">
-                Último Trimestre
-              </button>
-              <button 
-                class="period-btn" 
-                [class.active]="selectedPeriod === 'year'"
-                (click)="setPeriod('year')">
-                Este Ano
-              </button>
-              <button 
-                class="period-btn" 
-                [class.active]="selectedPeriod === 'custom'"
-                (click)="setPeriod('custom')">
-                Personalizado
-              </button>
-            </div>
-            <div class="period-info">
-              <span class="period-label">Período selecionado:</span>
-              <span class="period-text">{{ getPeriodText() }}</span>
-            </div>
-          </section>
+        </section>
 
-          <!-- Key Metrics -->
-          <section class="key-metrics">
-            <div class="metric-card revenue">
-              <div class="metric-header">
-                <h3>Receita Total</h3>
-              </div>
-              <div class="metric-value">R$ {{ formatCurrency(totalRevenue) }}</div>
-              <div class="metric-change positive">
-                <span>+15.2% vs período anterior</span>
-              </div>
-              <div class="metric-details">
-                <div class="detail-item">
-                  <span class="detail-label">Maior receita:</span>
-                  <span class="detail-value">R$ {{ formatCurrency(maxRevenue) }}</span>
-                </div>
-                <div class="detail-item">
-                  <span class="detail-label">Média mensal:</span>
-                  <span class="detail-value">R$ {{ formatCurrency(avgMonthlyRevenue) }}</span>
-                </div>
-              </div>
+        <!-- Advanced Analytics -->
+        <section class="analytics-section">
+          <div class="section-header">
+            <h2 class="section-title">Análises Avançadas</h2>
+            <div class="section-controls">
+              <select class="analytics-filter">
+                <option value="revenue">Por Receita</option>
+                <option value="client">Por Cliente</option>
+                <option value="project">Por Projeto</option>
+              </select>
             </div>
-            
-            <div class="metric-card expenses">
-              <div class="metric-header">
-                <h3>Despesas Totais</h3>
-              </div>
-              <div class="metric-value">R$ {{ formatCurrency(totalExpenses) }}</div>
-              <div class="metric-change negative">
-                <span>+8.7% vs período anterior</span>
-              </div>
-              <div class="metric-details">
-                <div class="detail-item">
-                  <span class="detail-label">Maior despesa:</span>
-                  <span class="detail-value">R$ {{ formatCurrency(maxExpense) }}</span>
-                </div>
-                <div class="detail-item">
-                  <span class="detail-label">Média mensal:</span>
-                  <span class="detail-value">R$ {{ formatCurrency(avgMonthlyExpenses) }}</span>
-                </div>
-              </div>
-            </div>
-            
-            <div class="metric-card profit">
-              <div class="metric-header">
-                <h3>Lucro Líquido</h3>
-              </div>
-              <div class="metric-value">R$ {{ formatCurrency(netProfit) }}</div>
-              <div class="metric-change positive">
-                <span>+22.1% vs período anterior</span>
-              </div>
-              <div class="metric-details">
-                <div class="detail-item">
-                  <span class="detail-label">Margem:</span>
-                  <span class="detail-value">{{ profitMargin }}%</span>
-                </div>
-                <div class="detail-item">
-                  <span class="detail-label">ROI:</span>
-                  <span class="detail-value">{{ roi }}%</span>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <!-- Charts Section -->
-          <section class="charts-grid">
-            <div class="chart-card evolution">
-              <div class="chart-header">
-                <h3>Evolução Financeira</h3>
-                <div class="chart-controls">
-                  <button class="chart-btn active">Receitas</button>
-                  <button class="chart-btn">Despesas</button>
-                  <button class="chart-btn">Lucro</button>
-                </div>
-              </div>
-              <div class="chart-content">
-                <div class="line-chart-mock">
-                  <div class="chart-lines">
-                    <svg viewBox="0 0 400 200" class="chart-svg">
-                      <polyline 
-                        points="0,150 50,120 100,100 150,80 200,60 250,40 300,30 350,20 400,10"
-                        fill="none" 
-                        stroke="var(--innovation-green)" 
-                        stroke-width="3"
-                        stroke-linecap="round"/>
-                      <polyline 
-                        points="0,180 50,170 100,160 150,155 200,145 250,140 300,135 350,130 400,125"
-                        fill="none" 
-                        stroke="var(--warning-orange)" 
-                        stroke-width="2"
-                        stroke-linecap="round"/>
-                    </svg>
-                  </div>
-                  <div class="chart-legend">
-                    <div class="legend-item">
-                      <span class="legend-color revenue"></span>
-                      <span>Receitas</span>
-                    </div>
-                    <div class="legend-item">
-                      <span class="legend-color expenses"></span>
-                      <span>Despesas</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <div class="chart-card categories">
-              <div class="chart-header">
-                <h3>Despesas por Categoria</h3>
-                <div class="chart-total">
-                  Total: R$ {{ formatCurrency(totalExpenses) }}
-                </div>
-              </div>
-              <div class="chart-content">
-                <div class="donut-chart">
-                  <div class="donut-chart-mock">
-                    <div class="donut-center">
-                      <div class="donut-value">{{ expenseCategories.length }}</div>
-                      <div class="donut-label">Categorias</div>
-                    </div>
-                  </div>
-                  <div class="categories-breakdown">
-                    <div 
-                      class="category-item" 
-                      *ngFor="let category of expenseCategories">
-                      <div class="category-color" [style.background-color]="category.color"></div>
-                      <div class="category-info">
-                        <div class="category-name">{{ category.name }}</div>
-                        <div class="category-amount">R$ {{ formatCurrency(category.amount) }}</div>
-                      </div>
-                      <div class="category-percentage">{{ category.percentage }}%</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <div class="chart-card comparison">
-              <div class="chart-header">
-                <h3>Comparativo Mensal</h3>
-                <select class="comparison-select">
-                  <option>Últimos 6 meses</option>
-                  <option>Últimos 12 meses</option>
-                  <option>Comparar anos</option>
-                </select>
-              </div>
-              <div class="chart-content">
-                <div class="bar-chart-mock">
-                  <div class="bars-container">
-                    <div class="bar-group" *ngFor="let month of monthlyComparison">
-                      <div class="bar-label">{{ month.name }}</div>
-                      <div class="bars">
-                        <div 
-                          class="bar revenue-bar" 
-                          [style.height.%]="month.revenuePercent">
-                        </div>
-                        <div 
-                          class="bar expense-bar" 
-                          [style.height.%]="month.expensePercent">
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <!-- Insights Section -->
-          <section class="insights-section">
-            <div class="insights-header">
-              <h2>Insights Inteligentes</h2>
-              <p>Análises automáticas baseadas nos seus dados financeiros</p>
-            </div>
-            
-            <div class="insights-grid">
-              <div class="insight-card positive">
-                <div class="insight-content">
-                  <h4>Crescimento Consistente</h4>
-                  <p>Suas receitas cresceram 15.2% nos últimos 3 meses. Continue assim!</p>
-                  <div class="insight-action">
-                    <button class="btn-link">Ver detalhes →</button>
-                  </div>
-                </div>
-              </div>
-              
-              <div class="insight-card warning">
-                <div class="insight-content">
-                  <h4>Atenção aos Gastos</h4>
-                  <p>Despesas com alimentação aumentaram 25% este mês. Considere revisar.</p>
-                  <div class="insight-action">
-                    <button class="btn-link">Otimizar gastos →</button>
-                  </div>
-                </div>
-              </div>
-              
-              <div class="insight-card info">
-                <div class="insight-content">
-                  <h4>Oportunidade de Economia</h4>
-                  <p>Você pode economizar R$ 340/mês cortando 30% dos gastos variáveis.</p>
-                  <div class="insight-action">
-                    <button class="btn-link">Ver plano →</button>
-                  </div>
-                </div>
-              </div>
-              
-              <div class="insight-card success">
-                <div class="insight-content">
-                  <h4>Meta Alcançada</h4>
-                  <p>Parabéns! Você atingiu sua meta de economia mensal de R$ 2.000.</p>
-                  <div class="insight-action">
-                    <button class="btn-link">Nova meta →</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
+          </div>
           
-          <!-- Export Options -->
-          <section class="export-section">
-            <div class="export-card">
-              <h3>Exportar Relatórios</h3>
-              <p>Baixe seus relatórios financeiros em diferentes formatos</p>
-              <div class="export-options">
-                <button class="export-btn">
-                  <span class="export-text">
-                    <div class="export-title">Relatório Completo</div>
-                    <div class="export-desc">PDF com todas as análises</div>
-                  </span>
-                </button>
-                <button class="export-btn">
-                  <span class="export-text">
-                    <div class="export-title">Planilha Excel</div>
-                    <div class="export-desc">Dados brutos para análise</div>
-                  </span>
-                </button>
-                <button class="export-btn">
-                  <span class="export-text">
-                    <div class="export-title">Resumo Executivo</div>
-                    <div class="export-desc">Principais métricas em 1 página</div>
-                  </span>
-                </button>
+          <div class="analytics-grid">
+            <!-- Performance Chart -->
+            <div class="analytics-card chart-card">
+              <div class="card-title">
+                <h3>Performance Temporal</h3>
+                <div class="chart-legend">
+                  <span class="legend-item revenue">● Receitas</span>
+                  <span class="legend-item expenses">● Despesas</span>
+                  <span class="legend-item profit">● Lucro</span>
+                </div>
+              </div>
+              <div class="chart-container">
+                <div class="performance-chart">
+                  <!-- Mock Line Chart -->
+                  <div class="chart-area">
+                    <div class="chart-line revenue-line"></div>
+                    <div class="chart-line expenses-line"></div>
+                    <div class="chart-line profit-line"></div>
+                    <div class="chart-points">
+                      <div class="point active" style="left: 20%; bottom: 60%"></div>
+                      <div class="point" style="left: 40%; bottom: 45%"></div>
+                      <div class="point" style="left: 60%; bottom: 75%"></div>
+                      <div class="point" style="left: 80%; bottom: 85%"></div>
+                    </div>
+                  </div>
+                  <div class="chart-labels">
+                    <span>Jun</span>
+                    <span>Jul</span>
+                    <span>Ago</span>
+                    <span>Set</span>
+                  </div>
+                </div>
               </div>
             </div>
-          </section>
-        </div>
+
+            <!-- Client Analysis -->
+            <div class="analytics-card clients-card">
+              <div class="card-title">
+                <h3>Análise de Clientes</h3>
+                <span class="card-subtitle">Top performers</span>
+              </div>
+              <div class="clients-list">
+                <div class="client-item">
+                  <div class="client-info">
+                    <div class="client-avatar">TI</div>
+                    <div class="client-details">
+                      <div class="client-name">Tech Innovations</div>
+                      <div class="client-type">Desenvolvimento</div>
+                    </div>
+                  </div>
+                  <div class="client-metrics">
+                    <div class="client-value">R$ 18.500</div>
+                    <div class="client-growth positive">+15.2%</div>
+                  </div>
+                </div>
+                
+                <div class="client-item">
+                  <div class="client-info">
+                    <div class="client-avatar">DS</div>
+                    <div class="client-details">
+                      <div class="client-name">Digital Solutions</div>
+                      <div class="client-type">Consultoria</div>
+                    </div>
+                  </div>
+                  <div class="client-metrics">
+                    <div class="client-value">R$ 12.300</div>
+                    <div class="client-growth positive">+8.7%</div>
+                  </div>
+                </div>
+                
+                <div class="client-item">
+                  <div class="client-info">
+                    <div class="client-avatar">FS</div>
+                    <div class="client-details">
+                      <div class="client-name">FinanceStartup</div>
+                      <div class="client-type">Produto</div>
+                    </div>
+                  </div>
+                  <div class="client-metrics">
+                    <div class="client-value">R$ 9.800</div>
+                    <div class="client-growth negative">-2.1%</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Strategic Insights -->
+        <section class="insights-section">
+          <div class="section-header">
+            <h2 class="section-title">Insights Estratégicos</h2>
+            <span class="ai-badge">🤖 Powered by AI</span>
+          </div>
+          
+          <div class="insights-grid">
+            <div class="insight-card growth">
+              <div class="insight-header">
+                <div class="insight-icon">📈</div>
+                <div class="insight-category">Crescimento</div>
+              </div>
+              <h4>Oportunidade de Expansão</h4>
+              <p>Com base no crescimento de 18.5%, você pode aumentar sua receita em até R$ 35.000 nos próximos 3 meses focando em novos clientes do segmento Tech.</p>
+              <div class="insight-action">
+                <button class="action-btn">Ver estratégia</button>
+              </div>
+            </div>
+
+            <div class="insight-card optimization">
+              <div class="insight-header">
+                <div class="insight-icon">⚡</div>
+                <div class="insight-category">Otimização</div>
+              </div>
+              <h4>Redução de Custos</h4>
+              <p>Identificamos R$ 4.200/mês em gastos otimizáveis. Principais oportunidades: ferramentas duplicadas (R$ 890) e assinaturas subutilizadas (R$ 1.340).</p>
+              <div class="insight-action">
+                <button class="action-btn">Otimizar agora</button>
+              </div>
+            </div>
+
+            <div class="insight-card risk">
+              <div class="insight-header">
+                <div class="insight-icon">⚠️</div>
+                <div class="insight-category">Risco</div>
+              </div>
+              <h4>Concentração de Cliente</h4>
+              <p>65% da receita vem de apenas 3 clientes. Recomendamos diversificar a base de clientes para reduzir riscos financeiros.</p>
+              <div class="insight-action">
+                <button class="action-btn">Ver plano</button>
+              </div>
+            </div>
+
+            <div class="insight-card forecast">
+              <div class="insight-header">
+                <div class="insight-icon">🔮</div>
+                <div class="insight-category">Previsão</div>
+              </div>
+              <h4>Projeção Q4</h4>
+              <p>Baseado nos padrões atuais, estimamos receita de R$ 165.000 no Q4, com margem de lucro de 34.2%. Meta: R$ 175.000.</p>
+              <div class="insight-action">
+                <button class="action-btn">Ajustar metas</button>
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
     </div>
   `,
   styles: [`
-    .reports-container {
-      height: 100vh;
-      background: var(--bg-tertiary);
+    .executive-reports {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    }
+
+    /* Executive Header */
+    .executive-header {
+      position: relative;
+      background: linear-gradient(135deg, #1e293b 0%, #334155 50%, #475569 100%);
+      padding: 3rem 2rem 4rem;
       overflow: hidden;
     }
-    
-    .main-content {
-      overflow-y: auto;
-      height: 100vh;
-      background: var(--bg-tertiary);
+
+    .header-background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      overflow: hidden;
     }
-    
-    .dashboard-header {
-      background: var(--bg-primary);
-      border-bottom: 1px solid var(--border-primary);
-      padding: var(--space-8) var(--space-8);
-      flex-shrink: 0;
+
+    .gradient-mesh {
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+                  radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+                  radial-gradient(circle at 20% 80%, rgba(16, 185, 129, 0.1) 0%, transparent 50%);
+      animation: float 20s ease-in-out infinite;
     }
-    
-    .header-content {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      max-width: 1400px;
-      margin: 0 auto;
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(2deg); }
     }
-    
-    .welcome-section h1 {
-      color: var(--text-primary);
-      font-size: 2rem;
-      font-weight: 700;
-      margin: 0 0 var(--space-2) 0;
-      letter-spacing: -0.025em;
+
+    .floating-elements {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
     }
-    
-    .welcome-section p {
-      color: var(--text-secondary);
-      margin: 0;
-      font-size: 1rem;
-    }
-    
-    .header-actions {
-      display: flex;
-      gap: var(--space-3);
-    }
-    
-    .dashboard-content {
-      padding: var(--space-8);
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-8);
-      max-width: 1400px;
-      margin: 0 auto;
-    }
-    
-    .period-selector {
-      background: var(--bg-primary);
-      padding: var(--space-6);
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-sm);
-      border: 1px solid var(--border-primary);
-    }
-    
-    .period-tabs {
-      display: flex;
-      gap: var(--space-2);
-      margin-bottom: var(--space-4);
-      flex-wrap: wrap;
-    }
-    
-    .period-btn {
-      padding: var(--space-3) var(--space-4);
-      border: 1px solid var(--border-primary);
-      background: var(--bg-secondary);
-      border-radius: var(--radius-md);
-      cursor: pointer;
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-      font-size: 0.875rem;
-      color: var(--text-secondary);
-      font-weight: 500;
-    }
-    
-    .period-btn.active {
-      background: var(--accent-blue);
-      color: var(--text-inverse);
-      border-color: var(--accent-blue);
-      box-shadow: var(--shadow-sm);
-      font-weight: 600;
-    }
-    
-    .period-btn:hover {
-      background: var(--accent-blue-light);
-      color: var(--accent-blue);
-      border-color: var(--accent-blue-light);
-    }
-    
-    .period-info {
-      display: flex;
-      align-items: center;
-      gap: var(--space-4);
-    }
-    
-    .period-label {
-      font-weight: 600;
-      color: var(--text-primary);
-    }
-    
-    .period-text {
-      color: var(--text-secondary);
-      font-size: 0.875rem;
-    }
-    
-    .key-metrics {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: var(--space-6);
-    }
-    
-    .metric-card {
-      background: var(--bg-primary);
-      padding: var(--space-8);
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-sm);
-      border: 1px solid var(--border-primary);
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    
-    .metric-card.revenue {
-      border-left: 4px solid var(--accent-green);
-    }
-    
-    .metric-card.expenses {
-      border-left: 4px solid var(--accent-orange);
-    }
-    
-    .metric-card.profit {
-      border-left: 4px solid var(--accent-blue);
-    }
-    
-    .metric-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: var(--space-6);
-    }
-    
-    .metric-header h3 {
-      color: var(--text-primary);
-      margin: 0;
-      font-size: 1rem;
-      font-weight: 600;
-    }
-    
-    
-    .metric-value {
-      font-size: 2.5rem;
-      font-weight: 700;
-      color: var(--text-primary);
-      margin-bottom: var(--space-4);
-      line-height: 1.1;
-      letter-spacing: -0.025em;
-    }
-    
-    .metric-change {
-      display: flex;
-      align-items: center;
-      gap: var(--space-2);
-      font-size: 0.875rem;
-      font-weight: 500;
-      margin-bottom: var(--space-6);
-    }
-    
-    .metric-change.positive {
-      color: var(--accent-green);
-    }
-    
-    .metric-change.negative {
-      color: var(--accent-orange);
-    }
-    
-    .metric-details {
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-3);
-    }
-    
-    .detail-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.875rem;
-    }
-    
-    .detail-label {
-      color: var(--text-secondary);
-    }
-    
-    .detail-value {
-      font-weight: 600;
-      color: var(--text-primary);
-    }
-    
-    .charts-grid {
-      display: grid;
-      grid-template-columns: 2fr 1fr;
-      grid-template-rows: auto auto;
-      gap: var(--space-8);
-    }
-    
-    .chart-card {
-      background: var(--bg-primary);
-      padding: var(--space-6);
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-sm);
-      border: 1px solid var(--border-primary);
-    }
-    
-    .chart-card.evolution {
-      grid-column: 1 / -1;
-    }
-    
-    .chart-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: var(--space-8);
-    }
-    
-    .chart-header h3 {
-      color: var(--text-primary);
-      margin: 0;
-      font-weight: 600;
-    }
-    
-    .chart-controls {
-      display: flex;
-      gap: var(--space-2);
-    }
-    
-    .chart-btn {
-      padding: var(--space-2) var(--space-4);
-      border: 1px solid var(--border-primary);
-      background: var(--bg-secondary);
-      border-radius: var(--radius-md);
-      font-size: 0.875rem;
-      cursor: pointer;
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-      color: var(--text-secondary);
-      font-weight: 500;
-    }
-    
-    .chart-btn.active {
-      background: var(--accent-blue);
-      color: var(--text-inverse);
-      border-color: var(--accent-blue);
-      font-weight: 600;
-    }
-    
-    .chart-btn:hover {
-      background: var(--accent-blue-light);
-      color: var(--accent-blue);
-      border-color: var(--accent-blue-light);
-    }
-    
-    .chart-total {
-      font-size: 0.875rem;
-      color: var(--text-secondary);
-    }
-    
-    .comparison-select {
-      padding: var(--space-2) var(--space-4);
-      border: 1px solid var(--border-primary);
-      border-radius: var(--radius-md);
-      font-size: 0.875rem;
-      background: var(--bg-primary);
-      color: var(--text-primary);
-    }
-    
-    .line-chart-mock {
-      height: 250px;
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-4);
-    }
-    
-    .chart-svg {
-      width: 100%;
-      height: 200px;
-      border-bottom: 1px solid var(--border-primary);
-      border-left: 1px solid var(--border-primary);
-    }
-    
-    .chart-legend {
-      display: flex;
-      justify-content: center;
-      gap: var(--space-8);
-    }
-    
-    .legend-item {
-      display: flex;
-      align-items: center;
-      gap: var(--space-2);
-      font-size: 0.875rem;
-      color: var(--text-secondary);
-    }
-    
-    .legend-color {
-      width: 12px;
-      height: 12px;
-      border-radius: var(--radius-sm);
-    }
-    
-    .legend-color.revenue {
-      background: var(--accent-green);
-    }
-    
-    .legend-color.expenses {
-      background: var(--accent-orange);
-    }
-    
-    .donut-chart-mock {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      background: conic-gradient(
-        var(--accent-green) 0deg 108deg,
-        var(--accent-orange) 108deg 180deg,
-        var(--accent-blue) 180deg 252deg,
-        var(--accent-purple) 252deg 360deg
-      );
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto var(--space-4);
-    }
-    
-    .donut-center {
+
+    .float-element {
+      position: absolute;
       width: 60px;
       height: 60px;
-      background: var(--bg-primary);
-      border-radius: 50%;
+      border-radius: 12px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .float-element.chart {
+      top: 20%;
+      right: 15%;
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(37, 99, 235, 0.1));
+      animation: floatChart 15s ease-in-out infinite;
+    }
+
+    .float-element.data {
+      top: 60%;
+      right: 25%;
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(124, 58, 237, 0.1));
+      animation: floatData 18s ease-in-out infinite;
+    }
+
+    .float-element.trend {
+      top: 40%;
+      right: 5%;
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.1));
+      animation: floatTrend 12s ease-in-out infinite;
+    }
+
+    @keyframes floatChart {
+      0%, 100% { transform: translateY(0px) translateX(0px); }
+      33% { transform: translateY(-15px) translateX(5px); }
+      66% { transform: translateY(10px) translateX(-5px); }
+    }
+
+    @keyframes floatData {
+      0%, 100% { transform: translateY(0px) translateX(0px); }
+      50% { transform: translateY(-20px) translateX(10px); }
+    }
+
+    @keyframes floatTrend {
+      0%, 100% { transform: translateY(0px) translateX(0px); }
+      25% { transform: translateY(15px) translateX(-8px); }
+      75% { transform: translateY(-10px) translateX(8px); }
+    }
+
+    .header-content {
+      position: relative;
+      z-index: 2;
+      max-width: 1400px;
+      margin: 0 auto;
       display: flex;
-      flex-direction: column;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 2rem;
+    }
+
+    .title-section {
+      flex: 1;
+    }
+
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      font-size: 0.875rem;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .breadcrumb-current {
+      color: rgba(255, 255, 255, 0.9);
+      font-weight: 500;
+    }
+
+    .executive-title {
+      font-size: 3.5rem;
+      font-weight: 800;
+      color: white;
+      margin: 0 0 1rem 0;
+      line-height: 1.1;
+      background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .executive-subtitle {
+      font-size: 1.25rem;
+      color: rgba(255, 255, 255, 0.8);
+      margin: 0;
+      line-height: 1.5;
+      max-width: 600px;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .time-range-selector {
+      display: flex;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 4px;
+      backdrop-filter: blur(10px);
+    }
+
+    .range-btn {
+      padding: 0.5rem 1rem;
+      border: none;
+      background: transparent;
+      color: rgba(255, 255, 255, 0.7);
+      font-weight: 600;
+      font-size: 0.875rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .range-btn.active {
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .range-btn:hover:not(.active) {
+      background: rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .export-btn.premium {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    }
+
+    .export-btn.premium:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+    }
+
+    /* Executive Content */
+    .executive-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    /* Executive Summary */
+    .executive-summary {
+      margin-bottom: 3rem;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .summary-card {
+      background: white;
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .summary-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+    }
+
+    .summary-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+    }
+
+    .summary-card.primary::before {
+      background: linear-gradient(90deg, #3b82f6, #1d4ed8);
+    }
+
+    .summary-card.secondary::before {
+      background: linear-gradient(90deg, #10b981, #059669);
+    }
+
+    .summary-card.tertiary::before {
+      background: linear-gradient(90deg, #8b5cf6, #7c3aed);
+    }
+
+    .summary-card.quaternary::before {
+      background: linear-gradient(90deg, #f59e0b, #d97706);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+    }
+
+    .metric-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
       align-items: center;
       justify-content: center;
-      text-align: center;
+      font-size: 1.5rem;
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(37, 99, 235, 0.05));
     }
-    
-    .donut-value {
-      font-size: 1.25rem;
-      font-weight: 600;
-      color: var(--text-primary);
-    }
-    
-    .donut-label {
-      font-size: 0.75rem;
-      color: var(--text-secondary);
-    }
-    
-    .categories-breakdown {
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-3);
-    }
-    
-    .category-item {
+
+    .metric-trend {
       display: flex;
       align-items: center;
-      gap: var(--space-3);
-    }
-    
-    .category-color {
-      width: 12px;
-      height: 12px;
-      border-radius: var(--radius-sm);
-    }
-    
-    .category-info {
-      flex: 1;
-    }
-    
-    .category-name {
-      font-size: 0.875rem;
-      color: var(--text-primary);
-      margin-bottom: var(--space-1);
-    }
-    
-    .category-amount {
+      gap: 0.25rem;
+      padding: 0.5rem 0.75rem;
+      border-radius: 20px;
       font-size: 0.75rem;
-      color: var(--text-secondary);
-    }
-    
-    .category-percentage {
-      font-size: 0.875rem;
-      font-weight: 600;
-      color: var(--text-primary);
-    }
-    
-    .bar-chart-mock {
-      height: 200px;
-      padding: var(--space-4) 0;
-    }
-    
-    .bars-container {
-      display: flex;
-      justify-content: space-between;
-      height: 100%;
-      align-items: end;
-      gap: var(--space-2);
-    }
-    
-    .bar-group {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      height: 100%;
-    }
-    
-    .bar-label {
-      font-size: 0.75rem;
-      color: var(--text-secondary);
-      margin-bottom: var(--space-4);
-      text-align: center;
-    }
-    
-    .bars {
-      display: flex;
-      gap: var(--space-1);
-      align-items: end;
-      flex: 1;
-    }
-    
-    .bar {
-      width: 20px;
-      min-height: 10px;
-      border-radius: var(--radius-sm) var(--radius-sm) 0 0;
-    }
-    
-    .revenue-bar {
-      background: var(--accent-green);
-    }
-    
-    .expense-bar {
-      background: var(--accent-orange);
-    }
-    
-    .insights-section {
-      margin-top: var(--space-4);
-    }
-    
-    .insights-header {
-      text-align: center;
-      margin-bottom: var(--space-8);
-    }
-    
-    .insights-header h2 {
-      color: var(--text-primary);
-      margin-bottom: var(--space-2);
       font-weight: 700;
     }
-    
-    .insights-header p {
-      color: var(--text-secondary);
-      margin: 0;
+
+    .metric-trend.positive {
+      background: rgba(16, 185, 129, 0.1);
+      color: #059669;
     }
-    
-    .insights-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: var(--space-6);
+
+    .metric-trend.stable {
+      background: rgba(59, 130, 246, 0.1);
+      color: #1d4ed8;
     }
-    
-    .insight-card {
-      background: var(--bg-primary);
-      padding: var(--space-6);
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-sm);
-      border: 1px solid var(--border-primary);
-      display: flex;
-      gap: var(--space-4);
+
+    .metric-value {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: #1e293b;
+      margin: 0 0 0.5rem 0;
+      line-height: 1.2;
     }
-    
-    .insight-card.positive {
-      border-left: 4px solid var(--accent-green);
-    }
-    
-    .insight-card.warning {
-      border-left: 4px solid var(--accent-orange);
-    }
-    
-    .insight-card.info {
-      border-left: 4px solid var(--accent-blue);
-    }
-    
-    .insight-card.success {
-      border-left: 4px solid var(--accent-green);
-    }
-    
-    
-    .insight-content {
-      flex: 1;
-    }
-    
-    .insight-content h4 {
-      color: var(--text-primary);
-      margin: 0 0 var(--space-2) 0;
+
+    .metric-label {
       font-size: 1rem;
+      color: #64748b;
       font-weight: 600;
+      margin-bottom: 1rem;
     }
-    
-    .insight-content p {
-      color: var(--text-secondary);
-      margin: 0 0 var(--space-4) 0;
+
+    .metric-insight {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      background: rgba(0, 0, 0, 0.02);
+      border-radius: 12px;
+    }
+
+    .insight-label {
       font-size: 0.875rem;
-      line-height: 1.5;
+      color: #64748b;
+      font-weight: 500;
     }
-    
-    .btn-link {
-      background: none;
-      border: none;
-      color: var(--accent-blue);
+
+    .insight-value {
       font-size: 0.875rem;
-      cursor: pointer;
-      text-decoration: none;
-      font-weight: 600;
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      font-weight: 700;
+      color: #1e293b;
     }
-    
-    .btn-link:hover {
-      text-decoration: underline;
+
+    .insight-value.positive {
+      color: #059669;
     }
-    
-    .export-section {
-      margin-top: var(--space-4);
-    }
-    
-    .export-card {
-      background: var(--bg-primary);
-      padding: var(--space-8);
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-sm);
-      border: 1px solid var(--border-primary);
-      text-align: center;
-    }
-    
-    .export-card h3 {
-      color: var(--text-primary);
-      margin-bottom: var(--space-2);
-      font-weight: 600;
-    }
-    
-    .export-card p {
-      color: var(--text-secondary);
-      margin-bottom: var(--space-8);
-    }
-    
-    .export-options {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: var(--space-4);
-    }
-    
-    .export-btn {
+
+    /* Section Headers */
+    .section-header {
       display: flex;
       align-items: center;
-      gap: var(--space-4);
-      padding: var(--space-6);
-      border: 1px solid var(--border-primary);
-      background: var(--bg-secondary);
-      border-radius: var(--radius-md);
-      cursor: pointer;
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-      text-align: left;
+      justify-content: space-between;
+      margin-bottom: 2rem;
     }
-    
-    .export-btn:hover {
-      border-color: var(--accent-blue);
-      box-shadow: var(--shadow-md);
-      background: var(--bg-primary);
+
+    .section-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #1e293b;
+      margin: 0;
     }
-    
-    
-    .export-title {
+
+    .ai-badge {
+      padding: 0.5rem 1rem;
+      background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+      color: white;
+      border-radius: 20px;
+      font-size: 0.75rem;
       font-weight: 600;
-      color: var(--text-primary);
-      margin-bottom: var(--space-1);
     }
-    
-    .export-desc {
+
+    .section-controls {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .analytics-filter {
+      padding: 0.5rem 1rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      background: white;
+      color: #1e293b;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    /* Analytics Section */
+    .analytics-section {
+      margin-bottom: 3rem;
+    }
+
+    .analytics-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 2rem;
+    }
+
+    .analytics-card {
+      background: white;
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .card-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+    }
+
+    .card-title h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #1e293b;
+      margin: 0;
+    }
+
+    .card-subtitle {
       font-size: 0.875rem;
-      color: var(--text-secondary);
+      color: #64748b;
+      font-weight: 500;
     }
-    
+
+    .chart-legend {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .legend-item {
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .legend-item.revenue {
+      color: #3b82f6;
+    }
+
+    .legend-item.expenses {
+      color: #ef4444;
+    }
+
+    .legend-item.profit {
+      color: #10b981;
+    }
+
+    /* Chart Components */
+    .chart-container {
+      height: 300px;
+      position: relative;
+    }
+
+    .performance-chart {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chart-area {
+      flex: 1;
+      position: relative;
+      background: linear-gradient(180deg, rgba(59, 130, 246, 0.05) 0%, transparent 100%);
+      border-radius: 12px;
+      margin-bottom: 1rem;
+    }
+
+    .chart-line {
+      position: absolute;
+      height: 2px;
+      border-radius: 1px;
+      top: 50%;
+      left: 10%;
+      right: 10%;
+    }
+
+    .chart-line.revenue-line {
+      background: linear-gradient(90deg, #3b82f6, #1d4ed8);
+      transform: translateY(-10px);
+    }
+
+    .chart-line.expenses-line {
+      background: linear-gradient(90deg, #ef4444, #dc2626);
+      transform: translateY(0px);
+    }
+
+    .chart-line.profit-line {
+      background: linear-gradient(90deg, #10b981, #059669);
+      transform: translateY(10px);
+    }
+
+    .chart-points {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
+
+    .point {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: #3b82f6;
+      border: 2px solid white;
+      border-radius: 50%;
+      box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .point.active {
+      width: 12px;
+      height: 12px;
+      background: #1d4ed8;
+      box-shadow: 0 4px 12px rgba(29, 78, 216, 0.4);
+    }
+
+    .chart-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: #64748b;
+      font-weight: 500;
+    }
+
+    /* Client Analysis */
+    .clients-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .client-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem;
+      background: rgba(0, 0, 0, 0.02);
+      border-radius: 12px;
+      transition: all 0.3s ease;
+    }
+
+    .client-item:hover {
+      background: rgba(59, 130, 246, 0.05);
+      transform: translateX(4px);
+    }
+
+    .client-info {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .client-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 0.875rem;
+    }
+
+    .client-details {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .client-name {
+      font-weight: 600;
+      color: #1e293b;
+      font-size: 0.875rem;
+    }
+
+    .client-type {
+      font-size: 0.75rem;
+      color: #64748b;
+    }
+
+    .client-metrics {
+      text-align: right;
+    }
+
+    .client-value {
+      font-weight: 700;
+      color: #1e293b;
+      font-size: 0.875rem;
+    }
+
+    .client-growth {
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .client-growth.positive {
+      color: #059669;
+    }
+
+    .client-growth.negative {
+      color: #dc2626;
+    }
+
+    /* Insights Section */
+    .insights-section {
+      margin-bottom: 3rem;
+    }
+
+    .insights-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .insight-card {
+      background: white;
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .insight-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+    }
+
+    .insight-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+    }
+
+    .insight-card.growth::before {
+      background: linear-gradient(90deg, #10b981, #059669);
+    }
+
+    .insight-card.optimization::before {
+      background: linear-gradient(90deg, #3b82f6, #1d4ed8);
+    }
+
+    .insight-card.risk::before {
+      background: linear-gradient(90deg, #f59e0b, #d97706);
+    }
+
+    .insight-card.forecast::before {
+      background: linear-gradient(90deg, #8b5cf6, #7c3aed);
+    }
+
+    .insight-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .insight-icon {
+      font-size: 1.5rem;
+    }
+
+    .insight-category {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .insight-card h4 {
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: #1e293b;
+      margin: 0 0 0.75rem 0;
+    }
+
+    .insight-card p {
+      font-size: 0.875rem;
+      color: #64748b;
+      line-height: 1.6;
+      margin: 0 0 1rem 0;
+    }
+
+    .insight-action {
+      margin-top: 1rem;
+    }
+
+    .action-btn {
+      padding: 0.5rem 1rem;
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(37, 99, 235, 0.05));
+      color: #1d4ed8;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .action-btn:hover {
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(37, 99, 235, 0.1));
+      transform: translateY(-1px);
+    }
+
+    /* Responsive Design */
     @media (max-width: 1024px) {
-      .charts-grid {
-        grid-template-columns: 1fr;
-      }
-      
-      .chart-card.evolution {
-        grid-column: 1;
-      }
-    }
-    
-    @media (max-width: 768px) {
       .header-content {
         flex-direction: column;
-        gap: 1rem;
-        align-items: flex-start;
+        text-align: center;
+        gap: 2rem;
       }
-      
-      .dashboard-content {
-        padding: var(--space-4);
+
+      .executive-title {
+        font-size: 2.5rem;
       }
-      
-      .key-metrics {
+
+      .analytics-grid {
         grid-template-columns: 1fr;
       }
-      
+
+      .summary-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      }
+    }
+
+    @media (max-width: 768px) {
+      .executive-header {
+        padding: 2rem 1rem 3rem;
+      }
+
+      .executive-content {
+        padding: 1rem;
+      }
+
+      .executive-title {
+        font-size: 2rem;
+      }
+
+      .header-actions {
+        flex-direction: column;
+        width: 100%;
+      }
+
+      .time-range-selector {
+        width: 100%;
+        justify-content: center;
+      }
+
       .insights-grid {
         grid-template-columns: 1fr;
       }
-      
-      .export-options {
+
+      .summary-grid {
         grid-template-columns: 1fr;
+        gap: 1rem;
       }
-      
-      .period-tabs {
-        flex-direction: column;
+
+      .summary-card {
+        padding: 1.5rem;
+      }
+
+      .metric-value {
+        font-size: 2rem;
       }
     }
   `]
 })
 export class RelatoriosComponent implements OnInit {
-  selectedPeriod = 'month';
+  selectedPeriod = 'quarter';
+  currentTimeRange = '90d';
   
-  // Key metrics
-  totalRevenue = 24800.00;
-  totalExpenses = 12350.00;
-  netProfit = 12450.00;
-  maxRevenue = 8500.00;
-  maxExpense = 2800.00;
-  avgMonthlyRevenue = 8266.67;
-  avgMonthlyExpenses = 4116.67;
-  profitMargin = 50.2;
-  roi = 22.4;
-  
-  expenseCategories = [
-    { name: 'Alimentação', amount: 3200, percentage: 26, color: '#E74C3C' },
-    { name: 'Transporte', amount: 2800, percentage: 23, color: '#F39C12' },
-    { name: 'Marketing', amount: 2500, percentage: 20, color: '#9B59B6' },
-    { name: 'Software', amount: 1850, percentage: 15, color: '#3498DB' },
-    { name: 'Material', amount: 1200, percentage: 10, color: '#2ECC71' },
-    { name: 'Outros', amount: 800, percentage: 6, color: '#95A5A6' }
-  ];
-  
-  monthlyComparison = [
-    { name: 'Jan', revenuePercent: 70, expensePercent: 45 },
-    { name: 'Fev', revenuePercent: 80, expensePercent: 50 },
-    { name: 'Mar', revenuePercent: 85, expensePercent: 55 },
-    { name: 'Abr', revenuePercent: 90, expensePercent: 48 },
-    { name: 'Mai', revenuePercent: 95, expensePercent: 52 },
-    { name: 'Jun', revenuePercent: 100, expensePercent: 47 }
-  ];
-  
-  ngOnInit() {
-    // Simular carregamento de dados
+  constructor() { }
+
+  ngOnInit(): void {
   }
-  
-  setPeriod(period: string) {
+
+  setTimeRange(range: string): void {
+    this.currentTimeRange = range;
+  }
+
+  setPeriod(period: string): void {
     this.selectedPeriod = period;
   }
-  
-  getPeriodText(): string {
-    const periods: { [key: string]: string } = {
-      month: 'Agosto 2024',
-      quarter: 'Jun - Ago 2024',
-      year: '2024',
-      custom: 'Jan - Ago 2024'
-    };
-    return periods[this.selectedPeriod] || 'Período selecionado';
-  }
-  
+
   formatCurrency(value: number): string {
-    return value.toLocaleString('pt-BR', {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    });
+    return value.toLocaleString('pt-BR');
   }
 }

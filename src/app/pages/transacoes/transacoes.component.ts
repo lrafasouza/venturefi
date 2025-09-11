@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { IconComponent } from '../../shared/components/icon/icon.component';
 
 @Component({
   selector: 'app-transacoes',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule, IconComponent],
   template: `
     <!-- Modern Fintech Transaction Page -->
     <div class="transaction-page">
@@ -31,9 +32,181 @@ import { RouterModule } from '@angular/router';
             <button class="action-btn secondary" (click)="exportCSV()">
               <span>↓</span> Exportar
             </button>
+            <button class="action-btn smart" (click)="showCategorizationPanel = !showCategorizationPanel">
+              <app-icon name="sparkles" size="16"></app-icon>
+              <span>IA</span>
+            </button>
           </div>
         </div>
       </header>
+
+      <!-- Smart Categorization Panel -->
+      <section class="smart-categorization" *ngIf="showCategorizationPanel">
+        <div class="categorization-card">
+          <div class="categorization-header">
+            <div class="header-left">
+              <div class="ai-icon">
+                <app-icon name="sparkles" size="24" className="text-primary"></app-icon>
+              </div>
+              <div class="header-text">
+                <h3>Categorização Inteligente</h3>
+                <p>Sistema de IA analisando suas transações para melhor organização</p>
+              </div>
+            </div>
+            <div class="header-actions">
+              <button class="toggle-btn" (click)="toggleCategorizationRules()">
+                <app-icon name="cog-6-tooth" size="16"></app-icon>
+                <span>Configurar Regras</span>
+              </button>
+              <button class="close-panel-btn" (click)="showCategorizationPanel = false">
+                <app-icon name="x-mark" size="16"></app-icon>
+              </button>
+            </div>
+          </div>
+
+          <!-- AI Suggestions -->
+          <div class="ai-suggestions" *ngIf="aiSuggestions.length > 0">
+            <div class="suggestions-header">
+              <app-icon name="light-bulb" size="20" className="text-warning"></app-icon>
+              <h4>Sugestões de Categorização</h4>
+              <span class="suggestions-count">{{ aiSuggestions.length }} sugestões</span>
+            </div>
+            
+            <div class="suggestions-list">
+              <div class="suggestion-item" *ngFor="let suggestion of aiSuggestions">
+                <div class="suggestion-content">
+                  <div class="transaction-preview">
+                    <div class="preview-icon" [style.background-color]="suggestion.suggestedCategory.color + '20'">
+                      {{ getCategoryEmoji(suggestion.suggestedCategory.name) }}
+                    </div>
+                    <div class="preview-info">
+                      <div class="preview-description">{{ suggestion.transaction.description }}</div>
+                      <div class="preview-details">
+                        <span class="amount">R$ {{ formatCurrency(suggestion.transaction.amount) }}</span>
+                        <span class="date">{{ formatDate(suggestion.transaction.date) }}</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="suggestion-action">
+                    <div class="category-suggestion">
+                      <span class="suggestion-text">Sugerir categoria:</span>
+                      <div class="suggested-category" [style.background-color]="suggestion.suggestedCategory.color + '20'" [style.color]="suggestion.suggestedCategory.color">
+                        {{ getCategoryEmoji(suggestion.suggestedCategory.name) }}
+                        {{ suggestion.suggestedCategory.name }}
+                      </div>
+                      <span class="confidence">{{ suggestion.confidence }}% de confiança</span>
+                    </div>
+                    
+                    <div class="suggestion-buttons">
+                      <button class="suggestion-btn accept" (click)="acceptSuggestion(suggestion)">
+                        <app-icon name="check" size="14"></app-icon>
+                        <span>Aceitar</span>
+                      </button>
+                      <button class="suggestion-btn reject" (click)="rejectSuggestion(suggestion)">
+                        <app-icon name="x-mark" size="14"></app-icon>
+                        <span>Rejeitar</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Learning from User -->
+                <div class="learning-indicator" *ngIf="suggestion.isLearning">
+                  <app-icon name="academic-cap" size="16" className="text-blue"></app-icon>
+                  <span>IA aprendendo com sua escolha...</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Auto-Categorization Rules -->
+          <div class="categorization-rules" *ngIf="showRulesPanel">
+            <div class="rules-header">
+              <h4>
+                <app-icon name="cog-6-tooth" size="20" className="text-secondary"></app-icon>
+                Regras de Categorização Automática
+              </h4>
+              <button class="add-rule-btn" (click)="showAddRuleModal = true">
+                <app-icon name="plus" size="14"></app-icon>
+                <span>Nova Regra</span>
+              </button>
+            </div>
+
+            <div class="rules-list">
+              <div class="rule-item" *ngFor="let rule of categorizationRules">
+                <div class="rule-content">
+                  <div class="rule-condition">
+                    <div class="condition-type">
+                      <span class="condition-label">Se</span>
+                      <span class="condition-field">{{ getRuleFieldName(rule.field) }}</span>
+                      <span class="condition-operator">{{ getRuleOperatorName(rule.operator) }}</span>
+                      <span class="condition-value">"{{ rule.value }}"</span>
+                    </div>
+                    <div class="rule-action">
+                      <span class="action-label">Então</span>
+                      <div class="action-category" [style.background-color]="rule.targetCategory.color + '20'" [style.color]="rule.targetCategory.color">
+                        {{ getCategoryEmoji(rule.targetCategory.name) }}
+                        {{ rule.targetCategory.name }}
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="rule-stats">
+                    <span class="rule-usage">{{ rule.appliedCount }} aplicações</span>
+                    <span class="rule-accuracy">{{ rule.accuracy }}% precisão</span>
+                  </div>
+                </div>
+                
+                <div class="rule-actions">
+                  <button class="rule-action-btn" (click)="toggleRule(rule)" [class.active]="rule.isActive">
+                    <app-icon [name]="rule.isActive ? 'pause' : 'play'" size="14"></app-icon>
+                  </button>
+                  <button class="rule-action-btn edit" (click)="editRule(rule)">
+                    <app-icon name="pencil" size="14"></app-icon>
+                  </button>
+                  <button class="rule-action-btn delete" (click)="deleteRule(rule.id)">
+                    <app-icon name="trash" size="14"></app-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Stats -->
+          <div class="categorization-stats">
+            <div class="stat-item">
+              <div class="stat-icon">
+                <app-icon name="chart-pie" size="16" className="text-success"></app-icon>
+              </div>
+              <div class="stat-content">
+                <span class="stat-value">{{ getCategorizationAccuracy() }}%</span>
+                <span class="stat-label">Precisão da IA</span>
+              </div>
+            </div>
+            
+            <div class="stat-item">
+              <div class="stat-icon">
+                <app-icon name="clock" size="16" className="text-blue"></app-icon>
+              </div>
+              <div class="stat-content">
+                <span class="stat-value">{{ getAutoCategorizationCount() }}</span>
+                <span class="stat-label">Auto categorizadas</span>
+              </div>
+            </div>
+            
+            <div class="stat-item">
+              <div class="stat-icon">
+                <app-icon name="academic-cap" size="16" className="text-purple"></app-icon>
+              </div>
+              <div class="stat-content">
+                <span class="stat-value">{{ getActiveRulesCount() }}</span>
+                <span class="stat-label">Regras ativas</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       <!-- Filters -->
       <section class="filters-section">
@@ -329,6 +502,12 @@ import { RouterModule } from '@angular/router';
       background: rgba(255, 255, 255, 0.8);
       color: #334155;
       border: 1px solid #e2e8f0;
+    }
+
+    .action-btn.smart {
+      background: linear-gradient(135deg, #8b5cf6, #a855f7);
+      color: white;
+      box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
     }
 
     .action-btn:hover {
@@ -865,6 +1044,541 @@ import { RouterModule } from '@angular/router';
         gap: 0.25rem;
       }
     }
+
+    /* ============ Smart Categorization Styles ============ */
+    .smart-categorization {
+      margin-bottom: 2rem;
+    }
+
+    .categorization-card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      border: 1px solid #e2e8f0;
+      overflow: hidden;
+    }
+
+    .categorization-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem;
+      border-bottom: 1px solid #f1f5f9;
+      background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .ai-icon {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, #8b5cf6, #a855f7);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+    }
+
+    .header-text h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #1e293b;
+      margin: 0 0 0.25rem 0;
+    }
+
+    .header-text p {
+      font-size: 0.875rem;
+      color: #64748b;
+      margin: 0;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+    }
+
+    .toggle-btn, .close-panel-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .toggle-btn {
+      background: #667eea;
+      color: white;
+    }
+
+    .toggle-btn:hover {
+      background: #5a67d8;
+      transform: translateY(-1px);
+    }
+
+    .close-panel-btn {
+      background: #f8fafc;
+      color: #64748b;
+      width: 36px;
+      height: 36px;
+      justify-content: center;
+      padding: 0;
+    }
+
+    .close-panel-btn:hover {
+      background: #e2e8f0;
+      color: #374151;
+    }
+
+    /* AI Suggestions */
+    .ai-suggestions {
+      padding: 1.5rem;
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    .suggestions-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .suggestions-header h4 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #1e293b;
+      margin: 0;
+      flex: 1;
+    }
+
+    .suggestions-count {
+      background: #fbbf24;
+      color: #92400e;
+      padding: 0.25rem 0.75rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .suggestions-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .suggestion-item {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .suggestion-item:hover {
+      border-color: #8b5cf6;
+      box-shadow: 0 4px 12px rgba(139, 92, 246, 0.15);
+    }
+
+    .suggestion-content {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .transaction-preview {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .preview-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+    }
+
+    .preview-info {
+      flex: 1;
+    }
+
+    .preview-description {
+      font-weight: 600;
+      color: #1e293b;
+      margin-bottom: 0.25rem;
+    }
+
+    .preview-details {
+      display: flex;
+      gap: 1rem;
+      font-size: 0.75rem;
+      color: #64748b;
+    }
+
+    .suggestion-action {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      align-items: flex-end;
+    }
+
+    .category-suggestion {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.5rem;
+    }
+
+    .suggestion-text {
+      font-size: 0.75rem;
+      color: #64748b;
+    }
+
+    .suggested-category {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 0.75rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.875rem;
+    }
+
+    .confidence {
+      font-size: 0.75rem;
+      color: #059669;
+      font-weight: 600;
+    }
+
+    .suggestion-buttons {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .suggestion-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.5rem 0.75rem;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .suggestion-btn.accept {
+      background: #10b981;
+      color: white;
+    }
+
+    .suggestion-btn.accept:hover {
+      background: #059669;
+      transform: translateY(-1px);
+    }
+
+    .suggestion-btn.reject {
+      background: #f1f5f9;
+      color: #64748b;
+    }
+
+    .suggestion-btn.reject:hover {
+      background: #e2e8f0;
+      color: #374151;
+    }
+
+    .learning-indicator {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+      padding: 0.5rem;
+      background: rgba(59, 130, 246, 0.1);
+      border-radius: 6px;
+      font-size: 0.75rem;
+      color: #2563eb;
+      font-style: italic;
+    }
+
+    /* Categorization Rules */
+    .categorization-rules {
+      padding: 1.5rem;
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    .rules-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .rules-header h4 {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #1e293b;
+      margin: 0;
+    }
+
+    .add-rule-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: #10b981;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .add-rule-btn:hover {
+      background: #059669;
+      transform: translateY(-1px);
+    }
+
+    .rules-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .rule-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+    }
+
+    .rule-item:hover {
+      border-color: #cbd5e1;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .rule-content {
+      flex: 1;
+    }
+
+    .rule-condition {
+      margin-bottom: 0.5rem;
+    }
+
+    .condition-type {
+      margin-bottom: 0.25rem;
+    }
+
+    .condition-label, .action-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #8b5cf6;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .condition-field, .condition-operator, .condition-value {
+      font-size: 0.875rem;
+      color: #374151;
+      margin: 0 0.25rem;
+    }
+
+    .condition-value {
+      font-weight: 600;
+      color: #1e293b;
+    }
+
+    .rule-action {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .action-category {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.75rem;
+    }
+
+    .rule-stats {
+      display: flex;
+      gap: 1rem;
+      font-size: 0.75rem;
+      color: #64748b;
+    }
+
+    .rule-usage, .rule-accuracy {
+      font-weight: 500;
+    }
+
+    .rule-actions {
+      display: flex;
+      gap: 0.25rem;
+      margin-left: 1rem;
+    }
+
+    .rule-action-btn {
+      width: 32px;
+      height: 32px;
+      border: none;
+      border-radius: 6px;
+      background: #f1f5f9;
+      color: #64748b;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .rule-action-btn:hover {
+      background: #e2e8f0;
+      color: #374151;
+      transform: scale(1.1);
+    }
+
+    .rule-action-btn.active {
+      background: #10b981;
+      color: white;
+    }
+
+    .rule-action-btn.edit:hover {
+      background: #3b82f6;
+      color: white;
+    }
+
+    .rule-action-btn.delete:hover {
+      background: #ef4444;
+      color: white;
+    }
+
+    /* Categorization Stats */
+    .categorization-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      padding: 1.5rem;
+    }
+
+    .stat-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1rem;
+      background: #f8fafc;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+    }
+
+    .stat-item:hover {
+      background: #f1f5f9;
+      transform: translateY(-2px);
+    }
+
+    .stat-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: rgba(139, 92, 246, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .stat-content {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .stat-value {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #1e293b;
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      color: #64748b;
+      font-weight: 500;
+    }
+
+    /* Color utilities for icons */
+    .text-primary { color: #8b5cf6; }
+    .text-warning { color: #f59e0b; }
+    .text-secondary { color: #64748b; }
+    .text-blue { color: #3b82f6; }
+    .text-success { color: #10b981; }
+    .text-purple { color: #8b5cf6; }
+
+    /* Responsive Design for Smart Categorization */
+    @media (max-width: 768px) {
+      .categorization-header {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: stretch;
+      }
+
+      .header-left {
+        justify-content: center;
+        text-align: center;
+      }
+
+      .suggestion-content {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+      }
+
+      .suggestion-action {
+        align-items: flex-start;
+      }
+
+      .category-suggestion {
+        align-items: flex-start;
+      }
+
+      .categorization-stats {
+        grid-template-columns: 1fr;
+      }
+
+      .rule-item {
+        flex-direction: column;
+        gap: 0.75rem;
+        align-items: flex-start;
+      }
+
+      .rule-actions {
+        margin-left: 0;
+        align-self: flex-end;
+      }
+    }
   `]
 })
 export class TransacoesComponent implements OnInit {
@@ -874,6 +1588,13 @@ export class TransacoesComponent implements OnInit {
   selectedOrigin = 'all';
   showTransactionModal = false;
   editingTransaction = false;
+  
+  // Smart Categorization properties
+  showCategorizationPanel = true;
+  showRulesPanel = false;
+  showAddRuleModal = false;
+  aiSuggestions: any[] = [];
+  categorizationRules: any[] = [];
 
   newTransaction = {
     type: 'expense',
@@ -954,7 +1675,10 @@ export class TransacoesComponent implements OnInit {
     ]
   };
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.initializeAISuggestions();
+    this.initializeCategorizationRules();
+  }
 
   // Filter methods
   setFilter(filter: string) {
@@ -1137,5 +1861,236 @@ export class TransacoesComponent implements OnInit {
 
   getAbsoluteBalance(): number {
     return Math.abs(this.getFilteredBalance());
+  }
+
+  // ============ Smart Categorization Methods ============
+
+  initializeAISuggestions(): void {
+    this.aiSuggestions = [
+      {
+        id: 'ai-1',
+        transaction: {
+          id: 999,
+          description: 'UBER EATS - Pedido #12345',
+          amount: 42.50,
+          date: new Date(),
+          category: '',
+          type: 'expense'
+        },
+        suggestedCategory: {
+          name: 'Alimentação',
+          color: '#ef4444'
+        },
+        confidence: 94,
+        reason: 'Padrão reconhecido: "UBER EATS" indica delivery de comida',
+        isLearning: false
+      },
+      {
+        id: 'ai-2',
+        transaction: {
+          id: 998,
+          description: 'POSTO SHELL - Combustível',
+          amount: 85.20,
+          date: new Date(),
+          category: '',
+          type: 'expense'
+        },
+        suggestedCategory: {
+          name: 'Transporte',
+          color: '#f97316'
+        },
+        confidence: 89,
+        reason: 'Padrão reconhecido: "POSTO" + "Combustível" indica abastecimento',
+        isLearning: false
+      },
+      {
+        id: 'ai-3',
+        transaction: {
+          id: 997,
+          description: 'Adobe Creative Suite - Assinatura',
+          amount: 150.00,
+          date: new Date(),
+          category: '',
+          type: 'expense'
+        },
+        suggestedCategory: {
+          name: 'Equipamentos',
+          color: '#f59e0b'
+        },
+        confidence: 96,
+        reason: 'Padrão reconhecido: Software de design profissional',
+        isLearning: false
+      }
+    ];
+  }
+
+  initializeCategorizationRules(): void {
+    this.categorizationRules = [
+      {
+        id: 'rule-1',
+        name: 'Delivery Apps',
+        field: 'description',
+        operator: 'contains',
+        value: 'UBER EATS',
+        targetCategory: {
+          name: 'Alimentação',
+          color: '#ef4444'
+        },
+        isActive: true,
+        appliedCount: 23,
+        accuracy: 98,
+        createdAt: new Date('2024-01-15')
+      },
+      {
+        id: 'rule-2',
+        name: 'Postos de Combustível',
+        field: 'description',
+        operator: 'contains',
+        value: 'POSTO',
+        targetCategory: {
+          name: 'Transporte',
+          color: '#f97316'
+        },
+        isActive: true,
+        appliedCount: 31,
+        accuracy: 95,
+        createdAt: new Date('2024-01-10')
+      },
+      {
+        id: 'rule-3',
+        name: 'Software Adobe',
+        field: 'description',
+        operator: 'contains',
+        value: 'Adobe',
+        targetCategory: {
+          name: 'Equipamentos',
+          color: '#f59e0b'
+        },
+        isActive: true,
+        appliedCount: 12,
+        accuracy: 100,
+        createdAt: new Date('2024-02-01')
+      },
+      {
+        id: 'rule-4',
+        name: 'Altos valores freelance',
+        field: 'amount',
+        operator: 'greater_than',
+        value: '2000',
+        targetCategory: {
+          name: 'Serviços',
+          color: '#10b981'
+        },
+        isActive: true,
+        appliedCount: 8,
+        accuracy: 87,
+        createdAt: new Date('2024-01-20')
+      },
+      {
+        id: 'rule-5',
+        name: 'Supermercados',
+        field: 'description',
+        operator: 'contains',
+        value: 'SUPERMERCADO',
+        targetCategory: {
+          name: 'Alimentação',
+          color: '#ef4444'
+        },
+        isActive: false,
+        appliedCount: 15,
+        accuracy: 78,
+        createdAt: new Date('2024-01-25')
+      }
+    ];
+  }
+
+  // Smart Categorization Actions
+  toggleCategorizationRules(): void {
+    this.showRulesPanel = !this.showRulesPanel;
+  }
+
+  acceptSuggestion(suggestion: any): void {
+    // Apply the suggested category to the transaction
+    const transaction = this.transactions.find(t => t.id === suggestion.transaction.id);
+    if (transaction) {
+      transaction.category = suggestion.suggestedCategory.name;
+      transaction.categoryColor = suggestion.suggestedCategory.color;
+    }
+
+    // Mark as learning and remove from suggestions
+    suggestion.isLearning = true;
+    setTimeout(() => {
+      this.aiSuggestions = this.aiSuggestions.filter(s => s.id !== suggestion.id);
+    }, 2000);
+  }
+
+  rejectSuggestion(suggestion: any): void {
+    // Remove from suggestions
+    this.aiSuggestions = this.aiSuggestions.filter(s => s.id !== suggestion.id);
+    
+    // In a real app, this would train the AI to not suggest this pattern again
+    console.log('AI learning from rejection:', suggestion.reason);
+  }
+
+  // Categorization Rules Management
+  toggleRule(rule: any): void {
+    rule.isActive = !rule.isActive;
+  }
+
+  editRule(rule: any): void {
+    console.log('Editing rule:', rule.name);
+    // In a real app, this would open an edit modal
+  }
+
+  deleteRule(ruleId: string): void {
+    if (confirm('Tem certeza que deseja excluir esta regra?')) {
+      this.categorizationRules = this.categorizationRules.filter(r => r.id !== ruleId);
+    }
+  }
+
+  // Rule Helper Methods
+  getRuleFieldName(field: string): string {
+    const fieldMap: { [key: string]: string } = {
+      'description': 'descrição',
+      'amount': 'valor',
+      'category': 'categoria',
+      'method': 'método de pagamento'
+    };
+    return fieldMap[field] || field;
+  }
+
+  getRuleOperatorName(operator: string): string {
+    const operatorMap: { [key: string]: string } = {
+      'contains': 'contém',
+      'equals': 'é igual a',
+      'greater_than': 'é maior que',
+      'less_than': 'é menor que',
+      'starts_with': 'começa com',
+      'ends_with': 'termina com'
+    };
+    return operatorMap[operator] || operator;
+  }
+
+  // Statistics Methods
+  getCategorizationAccuracy(): number {
+    if (this.categorizationRules.length === 0) return 0;
+    
+    const totalAccuracy = this.categorizationRules
+      .filter(rule => rule.isActive)
+      .reduce((sum, rule) => sum + rule.accuracy, 0);
+    
+    const activeRules = this.categorizationRules.filter(rule => rule.isActive).length;
+    
+    return activeRules > 0 ? Math.round(totalAccuracy / activeRules) : 0;
+  }
+
+  getAutoCategorizationCount(): number {
+    return this.categorizationRules
+      .filter(rule => rule.isActive)
+      .reduce((sum, rule) => sum + rule.appliedCount, 0);
+  }
+
+  getActiveRulesCount(): number {
+    return this.categorizationRules.filter(rule => rule.isActive).length;
   }
 }

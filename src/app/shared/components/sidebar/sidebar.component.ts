@@ -15,7 +15,7 @@ import { IconComponent } from '../icon/icon.component';
       </button>
       <div class="mobile-brand">
         <h2 class="brand-logo">VentureFi</h2>
-        <span class="page-subtitle">{{ getCurrentPageTitle() }}</span>
+        <span class="page-subtitle">Plataforma</span>
       </div>
       <div class="mobile-user">
         <div class="user-avatar animate-pulse">RN</div>
@@ -40,15 +40,16 @@ import { IconComponent } from '../icon/icon.component';
             <a
               [routerLink]="item.route"
               class="nav-link"
-              [class.active]="isActiveRoute(item.route)"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{exact: false}"
               (click)="closeMobileMenu()"
             >
-              <div class="nav-icon" [class.active-icon]="isActiveRoute(item.route)">
+              <div class="nav-icon">
                 <app-icon [name]="item.icon" size="20"></app-icon>
               </div>
               <span class="nav-text">{{ item.label }}</span>
               <span *ngIf="item.badge" class="notification-badge pulse">{{ item.badge }}</span>
-              <div *ngIf="isActiveRoute(item.route)" class="active-indicator"></div>
+              <div class="active-indicator"></div>
             </a>
           </li>
         </ul>
@@ -273,7 +274,17 @@ import { IconComponent } from '../icon/icon.component';
       height: 20px;
       background: linear-gradient(180deg, #667eea, #764ba2);
       border-radius: 0 4px 4px 0;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .nav-link.active .active-indicator {
       opacity: 1;
+    }
+
+    .nav-link.active .nav-icon {
+      transform: scale(1.1);
+      color: #667eea;
     }
 
     .nav-icon {
@@ -430,9 +441,7 @@ import { IconComponent } from '../icon/icon.component';
         display: flex;
       }
 
-      .mobile-overlay {
-        display: block;
-      }
+
     }
 
     @media (max-width: 480px) {
@@ -471,6 +480,11 @@ export class SidebarComponent implements OnInit {
       icon: 'target'
     },
     {
+      label: 'Open Finance',
+      route: '/platform/open-finance',
+      icon: 'building-library'
+    },
+    {
       label: 'Transações',
       route: '/platform/transacoes',
       icon: 'banknotes'
@@ -505,12 +519,4 @@ export class SidebarComponent implements OnInit {
     this.isMobileMenuOpen = false;
   }
 
-  isActiveRoute(route: string): boolean {
-    return this.router.url === route || this.router.url.startsWith(route);
-  }
-
-  getCurrentPageTitle(): string {
-    const currentItem = this.menuItems.find(item => this.isActiveRoute(item.route));
-    return currentItem ? currentItem.label : 'VentureFi';
-  }
 }

@@ -25,6 +25,12 @@ export const routes: Routes = [
     ]
   },
   
+  // Onboarding route (standalone)
+  {
+    path: 'onboarding',
+    loadComponent: () => import('./pages/onboarding/onboarding.component').then(m => m.OnboardingComponent)
+  },
+  
   // Platform routes without website header/footer
   {
     path: 'platform',
@@ -33,6 +39,7 @@ export const routes: Routes = [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', loadComponent: () => import('./pages/dashboard/dashboard.component').then(m => m.DashboardComponent) },
       { path: 'dream-pursuit', loadComponent: () => import('./pages/dream-pursuit/dream-pursuit-super.component').then(m => m.DreamPursuitSuperComponent) },
+      { path: 'open-finance', loadComponent: () => import('./pages/open-finance/open-finance').then(m => m.OpenFinanceComponent) },
       { path: 'transacoes', loadComponent: () => import('./pages/transacoes/transacoes.component').then(m => m.TransacoesComponent) },
       { path: 'relatorios', loadComponent: () => import('./pages/relatorios/relatorios.component').then(m => m.RelatoriosComponent) },
       { path: 'notificacoes', loadComponent: () => import('./pages/notificacoes/notificacoes.component').then(m => m.NotificacoesComponent) },

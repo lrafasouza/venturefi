@@ -485,14 +485,26 @@ export class LoginComponent {
     // Simular login
     setTimeout(() => {
       this.isLoading = false;
-      this.router.navigate(['/dashboard']);
+      // Check if user completed onboarding
+      const hasCompletedOnboarding = localStorage.getItem('venturefi_onboarding_completed');
+      if (hasCompletedOnboarding) {
+        this.router.navigate(['/platform/dashboard']);
+      } else {
+        this.router.navigate(['/onboarding']);
+      }
     }, 2000);
   }
 
   loginWithGoogle() {
     // Simular login com Google
     setTimeout(() => {
-      this.router.navigate(['/dashboard']);
+      // Check if user completed onboarding
+      const hasCompletedOnboarding = localStorage.getItem('venturefi_onboarding_completed');
+      if (hasCompletedOnboarding) {
+        this.router.navigate(['/platform/dashboard']);
+      } else {
+        this.router.navigate(['/onboarding']);
+      }
     }, 1000);
   }
 }

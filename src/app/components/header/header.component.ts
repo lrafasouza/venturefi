@@ -28,7 +28,7 @@ import { RouterModule } from '@angular/router';
           
           <div class="header-actions">
             <a routerLink="/login" class="btn btn-outline">Login</a>
-            <a routerLink="/platform/dashboard" class="btn btn-primary">Comece já</a>
+            <a routerLink="/onboarding" class="btn btn-primary">Comece já</a>
             
             <button class="mobile-menu-toggle" (click)="toggleMenu()" aria-label="Toggle menu">
               <span class="hamburger-line" [class.active]="isMenuOpen"></span>
