@@ -3,15 +3,7 @@
 ## 🔗 URL do Protótipo
 **Link da aplicação:** [Sua URL do Vercel aqui]
 
----
 
-## 📖 VISÃO GERAL DO PROJETO
-
-**VentureFi** é uma plataforma de gestão financeira moderna desenvolvida especificamente para freelancers e trabalhadores autônomos. O sistema oferece uma interface intuitiva para planejamento financeiro, controle de metas e análise de performance através de inteligência artificial.
-
----
-
-## 🖥️ DESCRIÇÃO DAS TELAS E FUNCIONALIDADES
 
 
 ### 1. **ONBOARDING**

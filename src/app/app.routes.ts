@@ -3,12 +3,14 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   
-  // Website routes with header/footer
+  // Simple home page - just button to onboarding
+  { path: 'home', loadComponent: () => import('./pages/home/home.component').then(m => m.HomeComponent) },
+  
+  // Website routes with header/footer (kept for potential future use)
   {
-    path: '',
+    path: 'website',
     loadComponent: () => import('./layouts/website-layout.component').then(m => m.WebsiteLayoutComponent),
     children: [
-      { path: 'home', loadComponent: () => import('./pages/home/home.component').then(m => m.HomeComponent) },
       { path: 'features', loadComponent: () => import('./pages/features/features.component').then(m => m.FeaturesComponent) },
       { path: 'pricing', loadComponent: () => import('./pages/pricing/pricing.component').then(m => m.PricingComponent) },
       { path: 'about', loadComponent: () => import('./pages/about/about.component').then(m => m.AboutComponent) },

@@ -7,470 +7,283 @@ import { RouterModule } from '@angular/router';
   standalone: true,
   imports: [CommonModule, RouterModule],
   template: `
-    <section class="hero">
-      <div class="container">
-        <div class="hero-content">
-          <div class="hero-text">
-            <h1>Transforme sua relação com o dinheiro</h1>
-            <p class="hero-subtitle">A VentureFi ajuda autônomos e freelancers a organizar, planejar e alcançar seus objetivos financeiros com simplicidade e tecnologia.</p>
-            <div class="hero-actions">
-              <a routerLink="/platform/dashboard" class="btn btn-primary btn-large">Comece grátis</a>
-              <a routerLink="/features" class="btn btn-outline btn-large">Saiba mais</a>
-            </div>
-          </div>
-          <div class="hero-visual">
-            <div class="dashboard-mockup">
-              <div class="mockup-header">
-                <div class="mockup-dots">
-                  <span></span>
-                  <span></span>
-                  <span></span>
-                </div>
-              </div>
-              <div class="mockup-content">
-                <div class="mockup-cards">
-                  <div class="mockup-card">
-                    <div class="card-title">Saldo Atual</div>
-                    <div class="card-value">R$ 12.540,50</div>
-                  </div>
-                  <div class="mockup-card success">
-                    <div class="card-title">Receitas</div>
-                    <div class="card-value">R$ 8.200,00</div>
-                  </div>
-                  <div class="mockup-card">
-                    <div class="card-title">Despesas</div>
-                    <div class="card-value">R$ 3.650,00</div>
-                  </div>
-                </div>
-                <div class="mockup-chart">
-                  <div class="chart-bars">
-                    <div class="bar" style="height: 60%"></div>
-                    <div class="bar" style="height: 80%"></div>
-                    <div class="bar" style="height: 45%"></div>
-                    <div class="bar" style="height: 90%"></div>
-                    <div class="bar" style="height: 70%"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+    <div class="minimal-home">
+      <!-- Background Animation -->
+      <div class="bg-animation">
+        <div class="floating-shape shape-1"></div>
+        <div class="floating-shape shape-2"></div>
+        <div class="floating-shape shape-3"></div>
+        <div class="floating-shape shape-4"></div>
+      </div>
+      
+      <!-- Main Content -->
+      <div class="main-content">
+        <div class="brand-section">
+          <div class="brand-icon">💰</div>
+          <h1 class="brand-name">VentureFi</h1>
+          <p class="brand-tagline">Sua jornada financeira começa aqui</p>
+        </div>
+        
+        <div class="action-section">
+          <a routerLink="/onboarding" class="enter-btn">
+            <span class="btn-icon">✨</span>
+            <span class="btn-text">Começar Agora</span>
+            <span class="btn-arrow">→</span>
+          </a>
+          <p class="helper-text">Clique para iniciar sua configuração</p>
         </div>
       </div>
-    </section>
-
-    <section class="dream-showcase">
-      <div class="container">
-        <div class="dream-content">
-          <div class="dream-info">
-            <h2>Em Busca do Sonho</h2>
-            <p>Transforme seus sonhos em metas concretas e acompanhe seu progresso em tempo real.</p>
-            <ul class="dream-features">
-              <li>Definição de metas personalizadas</li>
-              <li>Calculadora inteligente de economia</li>
-              <li>Acompanhamento visual do progresso</li>
-              <li>Dicas personalizadas de economia</li>
-            </ul>
-            <a routerLink="/platform/dream-pursuit" class="btn btn-success">Explore agora</a>
-          </div>
-          <div class="dream-visual">
-            <div class="dream-card">
-              <div class="dream-header">
-                <h3>Meu Carro Novo</h3>
-                <div class="dream-icon">🚗</div>
-              </div>
-              <div class="dream-progress">
-                <div class="progress-info">
-                  <span>R$ 15.000 / R$ 45.000</span>
-                  <span>33%</span>
-                </div>
-                <div class="progress-bar">
-                  <div class="progress-fill" style="width: 33%"></div>
-                </div>
-              </div>
-              <div class="dream-stats">
-                <div class="stat">
-                  <div class="stat-label">Faltam</div>
-                  <div class="stat-value">18 meses</div>
-                </div>
-                <div class="stat">
-                  <div class="stat-label">Por mês</div>
-                  <div class="stat-value">R$ 1.667</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+      
+      <!-- Footer -->
+      <div class="minimal-footer">
+        <p>Desenvolvido para freelancers e autônomos</p>
       </div>
-    </section>
-
-    <section class="features-preview">
-      <div class="container">
-        <div class="section-header text-center">
-          <h2>Por que escolher a VentureFi?</h2>
-          <p>Desenvolvida especialmente para quem tem renda variável</p>
-        </div>
-        <div class="features-grid">
-          <div class="feature-card">
-            <div class="feature-icon">📊</div>
-            <h3>Dashboard Intuitivo</h3>
-            <p>Visualize suas finanças de forma clara e organizada com gráficos interativos.</p>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon">🎯</div>
-            <h3>Metas Inteligentes</h3>
-            <p>Defina objetivos e acompanhe seu progresso com nossa ferramenta "Em Busca do Sonho".</p>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon">🔔</div>
-            <h3>Notificações Smart</h3>
-            <p>Receba alertas personalizados sobre suas finanças e oportunidades de economia.</p>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon">🔒</div>
-            <h3>Segurança Total</h3>
-            <p>Seus dados protegidos com criptografia avançada e protocolos de segurança bancária.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="cta-section">
-      <div class="container">
-        <div class="cta-content text-center">
-          <h2>Pronto para transformar suas finanças?</h2>
-          <p>Junte-se a milhares de freelancers e autônomos que já organizam suas finanças com a VentureFi</p>
-          <div class="cta-actions">
-            <a routerLink="/platform/dashboard" class="btn btn-primary btn-large">Começar gratuitamente</a>
-            <a routerLink="/pricing" class="btn btn-outline-white btn-large">Ver planos</a>
-          </div>
-        </div>
-      </div>
-    </section>
+    </div>
   `,
   styles: [`
-    .hero {
-      padding: 4rem 0;
-      background: linear-gradient(135deg, var(--professional-light-gray) 0%, var(--white) 100%);
-    }
-    
-    .hero-content {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
-      align-items: center;
-    }
-    
-    .hero-text h1 {
-      font-size: 3rem;
-      margin-bottom: 1.5rem;
-      line-height: 1.2;
-    }
-    
-    .hero-subtitle {
-      font-size: 1.25rem;
-      margin-bottom: 2rem;
-      color: var(--medium-gray);
-    }
-    
-    .hero-actions {
-      display: flex;
-      gap: 1rem;
-    }
-    
-    .btn-large {
-      padding: 1rem 2rem;
-      font-size: 1.1rem;
-      font-weight: 600;
-      min-width: 200px;
-      text-align: center;
-    }
-    
-    .dashboard-mockup {
-      background: var(--white);
-      border-radius: 16px;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    .minimal-home {
+      height: 100vh;
+      width: 100%;
+      position: relative;
       overflow: hidden;
-      transform: perspective(1000px) rotateY(-15deg) rotateX(10deg);
-      transition: transform 0.3s ease;
-    }
-    
-    .dashboard-mockup:hover {
-      transform: perspective(1000px) rotateY(-10deg) rotateX(5deg);
-    }
-    
-    .mockup-header {
-      background: var(--security-blue);
-      padding: 1rem;
+      background: linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #334155 100%);
       display: flex;
-      align-items: center;
+      flex-direction: column;
+      justify-content: space-between;
     }
     
-    .mockup-dots {
-      display: flex;
-      gap: 0.5rem;
-    }
-    
-    .mockup-dots span {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.3);
-    }
-    
-    .mockup-dots span:first-child {
-      background: #ff5f56;
-    }
-    
-    .mockup-dots span:nth-child(2) {
-      background: #ffbd2e;
-    }
-    
-    .mockup-dots span:last-child {
-      background: #27ca3f;
-    }
-    
-    .mockup-content {
-      padding: 2rem;
-    }
-    
-    .mockup-cards {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-    }
-    
-    .mockup-card {
-      background: var(--professional-light-gray);
-      padding: 1rem;
-      border-radius: 8px;
-      text-align: center;
-    }
-    
-    .mockup-card.success {
-      background: rgba(46, 204, 113, 0.1);
-    }
-    
-    .card-title {
-      font-size: 0.8rem;
-      color: var(--medium-gray);
-      margin-bottom: 0.5rem;
-    }
-    
-    .card-value {
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: var(--security-blue);
-    }
-    
-    .mockup-chart {
-      height: 100px;
-      background: var(--professional-light-gray);
-      border-radius: 8px;
-      padding: 1rem;
-      display: flex;
-      align-items: end;
-    }
-    
-    .chart-bars {
-      display: flex;
-      gap: 0.5rem;
+    /* Background Animation */
+    .bg-animation {
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
-      align-items: end;
+      z-index: 1;
     }
     
-    .bar {
-      flex: 1;
-      background: var(--innovation-green);
-      border-radius: 2px 2px 0 0;
-      min-height: 20px;
-    }
-    
-    .dream-showcase {
-      padding: 4rem 0;
-      background: var(--white);
-    }
-    
-    .dream-content {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
-      align-items: center;
-    }
-    
-    .dream-features {
-      list-style: none;
-      margin: 2rem 0;
-    }
-    
-    .dream-features li {
-      padding: 0.5rem 0;
-      padding-left: 2rem;
-      position: relative;
-    }
-    
-    .dream-features li::before {
-      content: '✓';
+    .floating-shape {
       position: absolute;
-      left: 0;
-      color: var(--innovation-green);
-      font-weight: bold;
+      border-radius: 50%;
+      background: rgba(46, 204, 113, 0.1);
+      animation: float 6s ease-in-out infinite;
     }
     
-    .dream-card {
-      background: var(--white);
-      border-radius: 16px;
-      padding: 2rem;
-      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
-      border: 1px solid var(--light-gray);
+    .shape-1 {
+      width: 100px;
+      height: 100px;
+      top: 20%;
+      left: 10%;
+      animation-delay: 0s;
     }
     
-    .dream-header {
+    .shape-2 {
+      width: 60px;
+      height: 60px;
+      top: 60%;
+      right: 15%;
+      background: rgba(59, 130, 246, 0.1);
+      animation-delay: 2s;
+    }
+    
+    .shape-3 {
+      width: 80px;
+      height: 80px;
+      bottom: 30%;
+      left: 20%;
+      background: rgba(139, 92, 246, 0.1);
+      animation-delay: 4s;
+    }
+    
+    .shape-4 {
+      width: 40px;
+      height: 40px;
+      top: 30%;
+      right: 30%;
+      background: rgba(245, 158, 11, 0.1);
+      animation-delay: 1s;
+    }
+    
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+        opacity: 0.7;
+      }
+      50% {
+        transform: translateY(-20px) rotate(180deg);
+        opacity: 0.3;
+      }
+    }
+    
+    /* Main Content */
+    .main-content {
+      flex: 1;
       display: flex;
-      justify-content: space-between;
+      flex-direction: column;
+      justify-content: center;
       align-items: center;
-      margin-bottom: 1.5rem;
-    }
-    
-    .dream-header h3 {
-      margin: 0;
-      color: var(--security-blue);
-    }
-    
-    .dream-icon {
-      font-size: 2rem;
-    }
-    
-    .dream-progress {
-      margin-bottom: 1.5rem;
-    }
-    
-    .progress-info {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 0.5rem;
-      font-size: 0.9rem;
-      color: var(--medium-gray);
-    }
-    
-    .dream-stats {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-    }
-    
-    .stat {
       text-align: center;
+      z-index: 2;
+      position: relative;
+      padding: 2rem;
     }
     
-    .stat-label {
-      font-size: 0.8rem;
-      color: var(--medium-gray);
-      margin-bottom: 0.25rem;
-    }
-    
-    .stat-value {
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: var(--security-blue);
-    }
-    
-    .features-preview {
-      padding: 4rem 0;
-      background: var(--professional-light-gray);
-    }
-    
-    .section-header {
+    .brand-section {
       margin-bottom: 3rem;
     }
     
-    .section-header h2 {
-      font-size: 2.5rem;
+    .brand-icon {
+      font-size: 4rem;
       margin-bottom: 1rem;
+      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+      animation: pulse 2s ease-in-out infinite;
     }
     
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 2rem;
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.05);
+      }
     }
     
-    .feature-card {
-      background: var(--white);
-      padding: 2rem;
-      border-radius: 12px;
-      text-align: center;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    .brand-name {
+      font-size: 3.5rem;
+      font-weight: 700;
+      color: #FFFFFF;
+      margin: 0 0 1rem 0;
+      text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      letter-spacing: -0.02em;
     }
     
-    .feature-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+    .brand-tagline {
+      font-size: 1.2rem;
+      color: rgba(255, 255, 255, 0.8);
+      margin: 0;
+      font-weight: 300;
     }
     
-    .feature-icon {
-      font-size: 3rem;
-      margin-bottom: 1rem;
-    }
-    
-    .feature-card h3 {
-      margin-bottom: 1rem;
-      color: var(--security-blue);
-    }
-    
-    .cta-section {
-      padding: 4rem 0;
-      background: var(--security-blue);
-      color: var(--white);
-    }
-    
-    .cta-content h2 {
-      color: var(--white);
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
-    }
-    
-    .cta-content p {
-      font-size: 1.25rem;
-      margin-bottom: 2rem;
-      color: rgba(255, 255, 255, 0.9);
-    }
-    
-    .cta-actions {
+    .action-section {
       display: flex;
+      flex-direction: column;
+      align-items: center;
       gap: 1rem;
-      justify-content: center;
     }
     
+    .enter-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.8rem;
+      padding: 1.2rem 2.5rem;
+      background: linear-gradient(135deg, #2ECC71, #27AE60);
+      color: white;
+      text-decoration: none;
+      border-radius: 60px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      box-shadow: 0 8px 25px rgba(46, 204, 113, 0.3);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .enter-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s;
+    }
+    
+    .enter-btn:hover::before {
+      left: 100%;
+    }
+    
+    .enter-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 35px rgba(46, 204, 113, 0.4);
+      background: linear-gradient(135deg, #27AE60, #229A52);
+    }
+    
+    .btn-icon {
+      font-size: 1.2rem;
+    }
+    
+    .btn-text {
+      font-size: 1.1rem;
+    }
+    
+    .btn-arrow {
+      font-size: 1.2rem;
+      transition: transform 0.3s ease;
+    }
+    
+    .enter-btn:hover .btn-arrow {
+      transform: translateX(4px);
+    }
+    
+    .helper-text {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.9rem;
+      margin: 0;
+      font-weight: 300;
+    }
+    
+    /* Footer */
+    .minimal-footer {
+      text-align: center;
+      padding: 2rem;
+      z-index: 2;
+      position: relative;
+    }
+    
+    .minimal-footer p {
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 0.85rem;
+      margin: 0;
+      font-weight: 300;
+    }
+    
+    /* Responsive */
     @media (max-width: 768px) {
-      .hero-content,
-      .dream-content {
-        grid-template-columns: 1fr;
-        gap: 2rem;
+      .brand-name {
+        font-size: 2.5rem;
       }
       
-      .hero-text h1 {
+      .brand-tagline {
+        font-size: 1rem;
+      }
+      
+      .enter-btn {
+        padding: 1rem 2rem;
+        font-size: 1rem;
+      }
+      
+      .main-content {
+        padding: 1.5rem;
+      }
+      
+      .floating-shape {
+        display: none;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .brand-name {
         font-size: 2rem;
       }
       
-      .hero-actions,
-      .cta-actions {
-        flex-direction: column;
-        align-items: center;
+      .brand-icon {
+        font-size: 3rem;
       }
       
-      .mockup-cards {
-        grid-template-columns: 1fr;
-      }
-      
-      .dashboard-mockup {
-        transform: none;
-      }
-      
-      .features-grid {
-        grid-template-columns: 1fr;
+      .enter-btn {
+        padding: 0.9rem 1.8rem;
+        gap: 0.6rem;
       }
     }
   `]
