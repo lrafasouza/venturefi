@@ -81,17 +81,17 @@ import { RouterModule } from '@angular/router';
 
             <div class="summary-card tertiary">
               <div class="card-header">
-                <div class="metric-icon clients">👥</div>
+                <div class="metric-icon investments">💎</div>
                 <div class="metric-trend positive">
                   <span class="trend-arrow">↗</span>
-                  <span class="trend-percent">+12.1%</span>
+                  <span class="trend-percent">+8.7%</span>
                 </div>
               </div>
-              <div class="metric-value">47</div>
-              <div class="metric-label">Clientes Ativos</div>
+              <div class="metric-value">R$ 18.420</div>
+              <div class="metric-label">Investimentos</div>
               <div class="metric-insight">
-                <span class="insight-label">Ticket Médio:</span>
-                <span class="insight-value">R$ 2.710</span>
+                <span class="insight-label">Rentabilidade:</span>
+                <span class="insight-value positive">+8.7%</span>
               </div>
             </div>
 
@@ -161,52 +161,52 @@ import { RouterModule } from '@angular/router';
               </div>
             </div>
 
-            <!-- Client Analysis -->
-            <div class="analytics-card clients-card">
+            <!-- Categories Analysis -->
+            <div class="analytics-card categories-card">
               <div class="card-title">
-                <h3>Análise de Clientes</h3>
-                <span class="card-subtitle">Top performers</span>
+                <h3>Análise por Categoria</h3>
+                <span class="card-subtitle">Principais gastos</span>
               </div>
-              <div class="clients-list">
-                <div class="client-item">
-                  <div class="client-info">
-                    <div class="client-avatar">TI</div>
-                    <div class="client-details">
-                      <div class="client-name">Tech Innovations</div>
-                      <div class="client-type">Desenvolvimento</div>
+              <div class="categories-list">
+                <div class="category-item">
+                  <div class="category-info">
+                    <div class="category-icon">🏠</div>
+                    <div class="category-details">
+                      <div class="category-name">Moradia</div>
+                      <div class="category-type">Gastos fixos</div>
                     </div>
                   </div>
-                  <div class="client-metrics">
-                    <div class="client-value">R$ 18.500</div>
-                    <div class="client-growth positive">+15.2%</div>
+                  <div class="category-metrics">
+                    <div class="category-value">R$ 18.500</div>
+                    <div class="category-percentage">32.4%</div>
                   </div>
                 </div>
                 
-                <div class="client-item">
-                  <div class="client-info">
-                    <div class="client-avatar">DS</div>
-                    <div class="client-details">
-                      <div class="client-name">Digital Solutions</div>
-                      <div class="client-type">Consultoria</div>
+                <div class="category-item">
+                  <div class="category-info">
+                    <div class="category-icon">🍽️</div>
+                    <div class="category-details">
+                      <div class="category-name">Alimentação</div>
+                      <div class="category-type">Gastos variáveis</div>
                     </div>
                   </div>
-                  <div class="client-metrics">
-                    <div class="client-value">R$ 12.300</div>
-                    <div class="client-growth positive">+8.7%</div>
+                  <div class="category-metrics">
+                    <div class="category-value">R$ 12.300</div>
+                    <div class="category-percentage">21.5%</div>
                   </div>
                 </div>
                 
-                <div class="client-item">
-                  <div class="client-info">
-                    <div class="client-avatar">FS</div>
-                    <div class="client-details">
-                      <div class="client-name">FinanceStartup</div>
-                      <div class="client-type">Produto</div>
+                <div class="category-item">
+                  <div class="category-info">
+                    <div class="category-icon">🚗</div>
+                    <div class="category-details">
+                      <div class="category-name">Transporte</div>
+                      <div class="category-type">Gastos variáveis</div>
                     </div>
                   </div>
-                  <div class="client-metrics">
-                    <div class="client-value">R$ 9.800</div>
-                    <div class="client-growth negative">-2.1%</div>
+                  <div class="category-metrics">
+                    <div class="category-value">R$ 9.800</div>
+                    <div class="category-percentage">17.1%</div>
                   </div>
                 </div>
               </div>
@@ -227,8 +227,8 @@ import { RouterModule } from '@angular/router';
                 <div class="insight-icon">📈</div>
                 <div class="insight-category">Crescimento</div>
               </div>
-              <h4>Oportunidade de Expansão</h4>
-              <p>Com base no crescimento de 18.5%, você pode aumentar sua receita em até R$ 35.000 nos próximos 3 meses focando em novos clientes do segmento Tech.</p>
+              <h4>Oportunidade de Crescimento</h4>
+              <p>Com base no crescimento de 18.5% na receita, você pode aumentar seus ganhos em até R$ 35.000 nos próximos 3 meses otimizando suas fontes de renda.</p>
               <div class="insight-action">
                 <button class="action-btn">Ver estratégia</button>
               </div>
@@ -251,8 +251,8 @@ import { RouterModule } from '@angular/router';
                 <div class="insight-icon">⚠️</div>
                 <div class="insight-category">Risco</div>
               </div>
-              <h4>Concentração de Cliente</h4>
-              <p>65% da receita vem de apenas 3 clientes. Recomendamos diversificar a base de clientes para reduzir riscos financeiros.</p>
+              <h4>Concentração de Gastos</h4>
+              <p>68% dos gastos se concentram em apenas 3 categorias. Considere diversificar investimentos e otimizar custos fixos para maior flexibilidade financeira.</p>
               <div class="insight-action">
                 <button class="action-btn">Ver plano</button>
               </div>
@@ -791,14 +791,14 @@ import { RouterModule } from '@angular/router';
       font-weight: 500;
     }
 
-    /* Client Analysis */
-    .clients-list {
+    /* Categories Analysis */
+    .categories-list {
       display: flex;
       flex-direction: column;
       gap: 1rem;
     }
 
-    .client-item {
+    .category-item {
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -808,68 +808,60 @@ import { RouterModule } from '@angular/router';
       transition: all 0.3s ease;
     }
 
-    .client-item:hover {
+    .category-item:hover {
       background: rgba(59, 130, 246, 0.05);
       transform: translateX(4px);
     }
 
-    .client-info {
+    .category-info {
       display: flex;
       align-items: center;
       gap: 1rem;
     }
 
-    .client-avatar {
+    .category-icon {
       width: 40px;
       height: 40px;
-      border-radius: 8px;
-      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(37, 99, 235, 0.05));
       display: flex;
       align-items: center;
       justify-content: center;
-      color: white;
-      font-weight: 700;
-      font-size: 0.875rem;
+      font-size: 1.25rem;
     }
 
-    .client-details {
+    .category-details {
       display: flex;
       flex-direction: column;
       gap: 0.25rem;
     }
 
-    .client-name {
+    .category-name {
       font-weight: 600;
       color: #1e293b;
       font-size: 0.875rem;
     }
 
-    .client-type {
+    .category-type {
       font-size: 0.75rem;
       color: #64748b;
     }
 
-    .client-metrics {
+    .category-metrics {
       text-align: right;
     }
 
-    .client-value {
+    .category-value {
       font-weight: 700;
       color: #1e293b;
       font-size: 0.875rem;
+      margin-bottom: 0.25rem;
     }
 
-    .client-growth {
+    .category-percentage {
       font-size: 0.75rem;
       font-weight: 600;
-    }
-
-    .client-growth.positive {
-      color: #059669;
-    }
-
-    .client-growth.negative {
-      color: #dc2626;
+      color: #3b82f6;
     }
 
     /* Insights Section */

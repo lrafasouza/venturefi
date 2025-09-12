@@ -480,7 +480,7 @@ export class SidebarComponent implements OnInit {
       icon: 'target'
     },
     {
-      label: 'Open Finance',
+      label: 'Conta',
       route: '/platform/open-finance',
       icon: 'building-library'
     },
